@@ -1,0 +1,21 @@
+@startuml Estados_Aluno
+title Diagrama de Estados - Aluno
+
+[*] --> Ativo : cadastrarAluno()
+
+Ativo : Aluno com acesso ao sistema
+Ativo : Pode realizar treinos
+Ativo --> Suspenso : suspenderAluno()
+Ativo --> Inativo : inativarAluno()
+
+Suspenso : Acesso temporariamente bloqueado
+Suspenso : Pendências financeiras ou disciplinares
+Suspenso --> Ativo : reativarAluno()
+Suspenso --> Inativo : inativarAluno()
+
+Inativo : Matrícula encerrada
+Inativo : Sem acesso ao sistema
+Inativo --> Ativo : reativarAluno()
+Inativo --> [*]
+
+@enduml

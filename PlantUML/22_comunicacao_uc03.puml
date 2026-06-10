@@ -1,0 +1,30 @@
+@startuml Comunicacao_UC03
+title Diagrama de Comunicação - UC-03: Registrar Execução de Treino
+
+object "aluno: Aluno" as ALN
+object "treinoController: TreinoController" as CTRL
+object "sessaoService: SessaoTreinoService" as SVC
+object "sessaoRepository: SessaoTreinoRepository" as SREPO
+object "serieRepository: SerieRegistradaRepository" as RREP
+object "novaSessao: SessaoTreino" as SESS
+object "novaSerie: SerieRegistrada" as SERIE
+
+ALN -> CTRL : 1: POST /sessoes/iniciar {fichaId}
+CTRL -> SVC : 2: iniciarSessao(fichaId, alunoId)
+SVC -> SESS : 3: new SessaoTreino(ficha, aluno)
+SVC -> SREPO : 4: save(novaSessao)
+SREPO --> SVC : 5: sessao
+
+ALN -> CTRL : 6: POST /sessoes/{id}/series {dados}
+CTRL -> SVC : 7: registrarSerie(sessaoId, serieDTO)
+SVC -> SERIE : 8: new SerieRegistrada(dados)
+SVC -> RREP : 9: save(novaSerie)
+RREP --> SVC : 10: serie
+
+ALN -> CTRL : 11: PATCH /sessoes/{id}/finalizar
+CTRL -> SVC : 12: finalizarSessao(sessaoId)
+SVC -> SREPO : 13: save(sessaoAtualizada)
+SREPO --> SVC : 14: resumo
+CTRL --> ALN : 15: 200 OK {resumo}
+
+@enduml

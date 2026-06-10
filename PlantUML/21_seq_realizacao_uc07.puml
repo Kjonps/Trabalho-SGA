@@ -1,0 +1,26 @@
+@startuml Sequencia_Realizacao_UC07
+title Sequência de Realização - UC-07: Registrar Medidas Corporais
+
+actor "Recepcionista" as REC
+participant "EvolucaoController" as CTRL
+participant "MedidaCorporalService" as SVC
+participant "AlunoRepository" as AREP
+participant "MedidaCorporalRepository" as MREP
+database "evolucao_db" as DB
+
+REC -> CTRL : POST /alunos/{id}/medidas\n{peso, altura, percGordura, massaMagra, circAbdomen}
+CTRL -> SVC : registrarMedidas(alunoId, medidasDTO)
+
+SVC -> AREP : findById(alunoId)
+AREP --> SVC : aluno
+
+SVC -> SVC : calcularIMC(peso, altura)
+SVC -> MREP : save(novaMedida)
+MREP -> DB : INSERT medida_corporal
+DB --> MREP : medidaId
+MREP --> SVC : MedidaCorporal
+
+SVC --> CTRL : MedidaCorporalDTO {id, imc, data}
+CTRL --> REC : 201 Created {medidaId, imc}
+
+@enduml

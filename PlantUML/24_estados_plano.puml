@@ -1,0 +1,31 @@
+@startuml Estados_PlanoTreino
+title Diagrama de Estados - Plano de Treino
+
+[*] --> Rascunho : criarPlano()
+
+Rascunho : Plano sendo configurado
+Rascunho : Fichas e exercícios sendo adicionados
+Rascunho --> Ativo : publicarPlano()
+Rascunho --> [*] : excluirRascunho()
+
+Ativo : Plano disponível para vinculação
+Ativo : Pode ser atribuído a alunos
+Ativo --> EmUso : vincularAoAluno()
+Ativo --> Inativo : desativarPlano()
+
+EmUso : Aluno executando o plano
+EmUso : Sessões sendo registradas
+EmUso --> Concluido : alunoConcluirPlano()
+EmUso --> Ativo : desvincularAluno()
+EmUso --> Inativo : desativarPlano()
+
+Concluido : Ciclo de treino encerrado
+Concluido : Histórico preservado
+Concluido --> [*]
+
+Inativo : Plano arquivado
+Inativo : Não pode ser vinculado
+Inativo --> Ativo : reativarPlano()
+Inativo --> [*]
+
+@enduml

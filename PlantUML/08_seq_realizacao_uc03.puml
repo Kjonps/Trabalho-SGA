@@ -1,0 +1,39 @@
+@startuml Sequencia_Realizacao_UC03
+title Sequência de Realização - UC-03: Registrar Execução de Treino
+
+actor "Aluno" as ALN
+participant "TreinoController" as CTRL
+participant "SessaoTreinoService" as SVC
+participant "SessaoTreinoRepository" as REPO
+participant "SerieRegistradaRepository" as SRREPO
+database "treino_db" as DB
+
+ALN -> CTRL : POST /sessoes/iniciar\n{fichaId, alunoId}
+CTRL -> SVC : iniciarSessao(fichaId, alunoId)
+SVC -> REPO : save(novaSessao)
+REPO -> DB : INSERT sessao_treino
+DB --> REPO : sessaoId
+REPO --> SVC : SessaoTreino
+SVC --> CTRL : SessaoDTO
+CTRL --> ALN : 201 Created {sessaoId}
+
+ALN -> CTRL : POST /sessoes/{id}/series\n{exercicioFichaId, series, reps, carga}
+CTRL -> SVC : registrarSerie(sessaoId, serieDTO)
+SVC -> SRREPO : save(novaSerieRegistrada)
+SRREPO -> DB : INSERT serie_registrada
+DB --> SRREPO : serieId
+SRREPO --> SVC : SerieRegistrada
+SVC --> CTRL : SerieRegistradaDTO
+CTRL --> ALN : 201 Created {serieId}
+
+ALN -> CTRL : PATCH /sessoes/{id}/finalizar
+CTRL -> SVC : finalizarSessao(sessaoId)
+SVC -> REPO : findById(sessaoId)
+REPO -> DB : SELECT sessao_treino
+DB --> REPO : sessao
+SVC -> REPO : save(sessaoAtualizada)
+REPO -> DB : UPDATE sessao_treino SET fim=now()
+SVC --> CTRL : ResumoSessaoDTO
+CTRL --> ALN : 200 OK {resumo}
+
+@enduml

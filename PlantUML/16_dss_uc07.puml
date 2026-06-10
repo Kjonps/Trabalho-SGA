@@ -1,0 +1,19 @@
+@startuml DSS_UC07_RegistrarMedidas
+title DSS - UC-07: Registrar Medidas Corporais
+
+actor "Recepcionista" as REC
+participant "Sistema GymFlow" as SIS
+
+REC -> SIS : buscarAluno(alunoId)
+SIS --> REC : exibirPerfilAluno(aluno)
+
+REC -> SIS : acessarRegistroMedidas(alunoId)
+SIS --> REC : exibirFormularioMedidas()
+
+REC -> SIS : informarMedidas(peso, altura, percGordura, massaMagra, circAbdomen)
+SIS --> REC : calcularIMC(imc)
+
+REC -> SIS : confirmarRegistro()
+SIS --> REC : exibirConfirmacao(medidasId, imc)
+
+@enduml

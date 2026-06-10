@@ -1,0 +1,20 @@
+@startuml DSS_UC01_Login
+title DSS - UC-01: Realizar Login
+
+actor "Usuário" as USR
+participant "Sistema GymFlow" as SIS
+
+USR -> SIS : acessarSistema()
+SIS --> USR : exibirTelaLogin()
+
+USR -> SIS : informarCredenciais(email, senha)
+SIS --> USR : validarCredenciais(resultado)
+
+alt credenciais válidas
+  SIS --> USR : gerarToken(jwt)
+  SIS --> USR : redirecionarDashboard(perfil)
+else credenciais inválidas
+  SIS --> USR : exibirErro("Credenciais inválidas")
+end
+
+@enduml

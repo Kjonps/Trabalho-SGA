@@ -1,0 +1,29 @@
+@startuml Sequencia_Realizacao_UC01
+title Sequência de Realização - UC-01: Realizar Login
+
+actor "Usuário" as USR
+participant "AuthController" as CTRL
+participant "AuthService" as SVC
+participant "UsuarioRepository" as REPO
+participant "JwtService" as JWT
+database "auth_db" as DB
+
+USR -> CTRL : POST /auth/login\n{email, senha}
+CTRL -> SVC : autenticar(email, senha)
+SVC -> REPO : findByEmail(email)
+REPO -> DB : SELECT usuario WHERE email = ?
+DB --> REPO : usuario
+
+alt usuario encontrado
+  SVC -> SVC : verificarSenha(senha, usuario.senhaHash)
+  SVC -> JWT : gerarToken(usuario.id, usuario.tipo)
+  JWT --> SVC : jwtToken
+
+  SVC --> CTRL : LoginResponseDTO {token, perfil}
+  CTRL --> USR : 200 OK {token, perfil}
+else usuario não encontrado ou senha inválida
+  SVC --> CTRL : UnauthorizedException
+  CTRL --> USR : 401 Unauthorized
+end
+
+@enduml

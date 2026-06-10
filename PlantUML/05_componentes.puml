@@ -1,0 +1,46 @@
+@startuml Componentes_GymFlow
+title Diagrama de Componentes - GymFlow
+
+package "Frontend (React)" {
+  [Auth Module]
+  [Treino Module]
+  [Evolução Module]
+  [Admin Module]
+}
+
+package "API Gateway" {
+  [Gateway Service\n(Spring Cloud Gateway)]
+}
+
+package "Microsserviços" {
+  [Auth Service\n:8081]
+  [Aluno Service\n:8082]
+  [Treino Service\n:8083]
+  [Evolução Service\n:8084]
+  [Notificação Service\n:8085]
+}
+
+package "Bancos de Dados" {
+  database "auth_db\n(PostgreSQL)" as AUTHDB
+  database "aluno_db\n(PostgreSQL)" as ALUDB
+  database "treino_db\n(PostgreSQL)" as TRDB
+  database "evolucao_db\n(PostgreSQL)" as EVDB
+}
+
+[Auth Module] --> [Gateway Service\n(Spring Cloud Gateway)]
+[Treino Module] --> [Gateway Service\n(Spring Cloud Gateway)]
+[Evolução Module] --> [Gateway Service\n(Spring Cloud Gateway)]
+[Admin Module] --> [Gateway Service\n(Spring Cloud Gateway)]
+
+[Gateway Service\n(Spring Cloud Gateway)] --> [Auth Service\n:8081]
+[Gateway Service\n(Spring Cloud Gateway)] --> [Aluno Service\n:8082]
+[Gateway Service\n(Spring Cloud Gateway)] --> [Treino Service\n:8083]
+[Gateway Service\n(Spring Cloud Gateway)] --> [Evolução Service\n:8084]
+[Gateway Service\n(Spring Cloud Gateway)] --> [Notificação Service\n:8085]
+
+[Auth Service\n:8081] --> AUTHDB
+[Aluno Service\n:8082] --> ALUDB
+[Treino Service\n:8083] --> TRDB
+[Evolução Service\n:8084] --> EVDB
+
+@enduml

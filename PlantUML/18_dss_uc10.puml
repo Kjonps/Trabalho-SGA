@@ -1,0 +1,19 @@
+@startuml DSS_UC10_ConfigurarExercicios
+title DSS - UC-10: Configurar Exercícios
+
+actor "Administrador" as ADM
+participant "Sistema GymFlow" as SIS
+
+ADM -> SIS : acessarCatalogoExercicios()
+SIS --> ADM : listarExercicios(exercicios)
+
+ADM -> SIS : novoExercicio(nome, descricao, grupoMuscular, equipamento)
+SIS --> ADM : exibirFormularioExercicio()
+
+ADM -> SIS : informarDadosExercicio(dados)
+SIS --> ADM : validarDados(resultado)
+
+ADM -> SIS : adicionarVideoUrl(exercicioId, url)
+SIS --> ADM : confirmarExercicio(exercicioId)
+
+@enduml

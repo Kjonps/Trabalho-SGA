@@ -1,0 +1,19 @@
+@startuml DSS_UC05_CadastrarAluno
+title DSS - UC-05: Cadastrar Aluno
+
+actor "Recepcionista" as REC
+participant "Sistema GymFlow" as SIS
+
+REC -> SIS : acessarCadastroAluno()
+SIS --> REC : exibirFormularioCadastro()
+
+REC -> SIS : informarDadosAluno(nome, cpf, email, telefone, dataNascimento)
+SIS --> REC : validarDados(resultado)
+
+REC -> SIS : selecionarPlanoTreino(planoId)
+SIS --> REC : exibirDetalhesPlano(plano)
+
+REC -> SIS : confirmarCadastro()
+SIS --> REC : exibirConfirmacao(alunoId, mensagem)
+
+@enduml

@@ -1,0 +1,21 @@
+@startuml DSS_UC03_RegistrarExecucaoTreino
+title DSS - UC-03: Registrar Execução de Treino
+
+actor "Aluno" as ALN
+participant "Sistema GymFlow" as SIS
+
+ALN -> SIS : acessarFichaTreino(alunoId)
+SIS --> ALN : exibirFichaTreino(exercicios)
+
+ALN -> SIS : iniciarTreino(fichaId, dataHora)
+SIS --> ALN : confirmarInicioTreino(sessaoId)
+
+loop Para cada exercício
+  ALN -> SIS : registrarSerie(sessaoId, exercicioId, series, repeticoes, carga)
+  SIS --> ALN : confirmarRegistro(serieId)
+end
+
+ALN -> SIS : finalizarTreino(sessaoId)
+SIS --> ALN : exibirResumoTreino(totalExercicios, duracaoMin)
+
+@enduml

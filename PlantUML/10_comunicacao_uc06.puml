@@ -1,0 +1,22 @@
+@startuml Comunicacao_UC06
+title Diagrama de Comunicação - UC-06: Gerenciar Planos de Treino
+
+object "recepcionista: Recepcionista" as REC
+object "planoController: PlanoTreinoController" as CTRL
+object "planoService: PlanoTreinoService" as SVC
+object "fichaService: FichaTreinoService" as FSVC
+object "planoRepository: PlanoTreinoRepository" as REPO
+object "novoPlano: PlanoTreino" as PLANO
+
+REC -> CTRL : 1: POST /planos {dadosPlano}
+CTRL -> SVC : 2: criarPlano(planoDTO)
+SVC -> PLANO : 3: new PlanoTreino(dados)
+SVC -> REPO : 4: save(novoPlano)
+REPO --> SVC : 5: planoSalvo
+
+REC -> CTRL : 6: POST /planos/{id}/fichas {dadosFicha}
+CTRL -> FSVC : 7: adicionarFicha(planoId, fichaDTO)
+FSVC --> CTRL : 8: fichaAdicionada
+CTRL --> REC : 9: 201 Created {planoId}
+
+@enduml

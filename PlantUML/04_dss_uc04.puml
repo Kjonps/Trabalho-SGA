@@ -1,0 +1,19 @@
+@startuml DSS_UC04_AcompanharEvolucao
+title DSS - UC-04: Acompanhar Evolução Física
+
+actor "Aluno" as ALN
+participant "Sistema GymFlow" as SIS
+
+ALN -> SIS : acessarEvolucao(alunoId)
+SIS --> ALN : exibirDashboardEvolucao(resumo)
+
+ALN -> SIS : selecionarPeriodo(dataInicio, dataFim)
+SIS --> ALN : exibirGraficoEvolucao(dados)
+
+ALN -> SIS : visualizarMedidasCorporais(alunoId)
+SIS --> ALN : exibirHistoricoMedidas(medidas)
+
+ALN -> SIS : compararPeriodos(periodo1, periodo2)
+SIS --> ALN : exibirComparativo(diferenca, percentual)
+
+@enduml

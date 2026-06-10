@@ -1,0 +1,21 @@
+@startuml Comunicacao_UC05
+title Diagrama de Comunicação - UC-05: Cadastrar Aluno
+
+object "recepcionista: Recepcionista" as REC
+object "alunoController: AlunoController" as CTRL
+object "alunoService: AlunoService" as SVC
+object "usuarioService: UsuarioService" as USVC
+object "alunoRepository: AlunoRepository" as REPO
+object "novoAluno: Aluno" as ALN
+
+REC -> CTRL : 1: POST /alunos {dadosAluno}
+CTRL -> SVC : 2: cadastrarAluno(alunoDTO)
+SVC -> USVC : 3: criarUsuario(nome, email, senha)
+USVC --> SVC : 4: usuario
+SVC -> ALN : 5: new Aluno(usuario, dados)
+SVC -> REPO : 6: save(novoAluno)
+REPO --> SVC : 7: alunoSalvo
+SVC --> CTRL : 8: AlunoDTO
+CTRL --> REC : 9: 201 Created {alunoId}
+
+@enduml

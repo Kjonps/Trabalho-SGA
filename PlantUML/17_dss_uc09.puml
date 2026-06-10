@@ -1,0 +1,19 @@
+@startuml DSS_UC09_GerenciarUsuarios
+title DSS - UC-09: Gerenciar Usuários
+
+actor "Administrador" as ADM
+participant "Sistema GymFlow" as SIS
+
+ADM -> SIS : acessarGerenciamentoUsuarios()
+SIS --> ADM : listarUsuarios(usuarios)
+
+ADM -> SIS : filtrarPorPerfil(tipo)
+SIS --> ADM : exibirUsuariosFiltrados(lista)
+
+ADM -> SIS : alterarPerfil(usuarioId, novoPerfil)
+SIS --> ADM : confirmarAlteracao(resultado)
+
+ADM -> SIS : inativarUsuario(usuarioId)
+SIS --> ADM : confirmarInativacao(usuarioId)
+
+@enduml

@@ -1,0 +1,31 @@
+@startuml Sequencia_Realizacao_UC05
+title Sequência de Realização - UC-05: Cadastrar Aluno
+
+actor "Recepcionista" as REC
+participant "AlunoController" as CTRL
+participant "AlunoService" as SVC
+participant "UsuarioService" as USVC
+participant "AlunoRepository" as REPO
+participant "NotificacaoService" as NOTIF
+database "aluno_db" as DB
+
+REC -> CTRL : POST /alunos\n{nome, cpf, email, telefone, dataNascimento, planoId}
+CTRL -> SVC : cadastrarAluno(alunoDTO)
+SVC -> USVC : verificarEmailExistente(email)
+USVC --> SVC : false
+
+SVC -> USVC : criarUsuario(nome, email, senhaTemporaria, ALUNO)
+USVC --> SVC : usuario
+
+SVC -> REPO : save(novoAluno)
+REPO -> DB : INSERT usuario, INSERT aluno
+DB --> REPO : alunoId
+REPO --> SVC : Aluno
+
+SVC -> NOTIF : enviarBoasVindas(email, senhaTemporaria)
+NOTIF --> SVC : ok
+
+SVC --> CTRL : AlunoDTO
+CTRL --> REC : 201 Created {alunoId}
+
+@enduml

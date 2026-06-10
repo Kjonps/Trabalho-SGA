@@ -1,0 +1,40 @@
+@startuml CasosDeUso_GymFlow
+left to right direction
+skinparam packageStyle rectangle
+
+actor "Aluno" as ALN
+actor "Recepcionista" as REC
+actor "Administrador" as ADM
+
+rectangle GymFlow {
+  usecase "UC-01: Realizar Login" as UC01
+  usecase "UC-02: Visualizar Ficha de Treino" as UC02
+  usecase "UC-03: Registrar Execução de Treino" as UC03
+  usecase "UC-04: Acompanhar Evolução Física" as UC04
+  usecase "UC-05: Cadastrar Aluno" as UC05
+  usecase "UC-06: Gerenciar Planos de Treino" as UC06
+  usecase "UC-07: Registrar Medidas Corporais" as UC07
+  usecase "UC-08: Gerar Relatório de Desempenho" as UC08
+  usecase "UC-09: Gerenciar Usuários" as UC09
+  usecase "UC-10: Configurar Exercícios" as UC10
+  usecase "UC-11: Visualizar Relatórios Gerenciais" as UC11
+}
+
+ALN --> UC01
+ALN --> UC02
+ALN --> UC03
+ALN --> UC04
+
+REC --> UC01
+REC --> UC05
+REC --> UC06
+REC --> UC07
+REC --> UC08
+
+ADM --> UC01
+ADM --> UC09
+ADM --> UC10
+ADM --> UC11
+ADM --> UC06
+
+@enduml

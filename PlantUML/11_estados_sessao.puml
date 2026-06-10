@@ -1,0 +1,23 @@
+@startuml Estados_SessaoTreino
+title Diagrama de Estados - Sessão de Treino
+
+[*] --> EmAndamento : iniciarTreino()
+
+EmAndamento : Sessão iniciada
+EmAndamento : Aluno registrando séries
+EmAndamento --> Pausada : pausarTreino()
+EmAndamento --> Finalizada : finalizarTreino()
+EmAndamento --> Cancelada : cancelarTreino()
+
+Pausada : Treino interrompido temporariamente
+Pausada --> EmAndamento : retomar()
+Pausada --> Cancelada : cancelarTreino()
+
+Finalizada : Resumo disponível
+Finalizada : Dados persistidos
+Finalizada --> [*]
+
+Cancelada : Dados descartados
+Cancelada --> [*]
+
+@enduml

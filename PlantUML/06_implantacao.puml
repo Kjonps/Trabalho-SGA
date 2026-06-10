@@ -1,0 +1,38 @@
+@startuml Implantacao_GymFlow
+title Diagrama de Implantação - GymFlow
+
+node "Navegador do Usuário" {
+  artifact "React App (SPA)"
+}
+
+node "Servidor de Aplicação\n(AWS EC2)" {
+  node "Docker Compose" {
+    artifact "API Gateway\n(Spring Cloud Gateway)"
+    artifact "Auth Service"
+    artifact "Aluno Service"
+    artifact "Treino Service"
+    artifact "Evolução Service"
+    artifact "Notificação Service"
+  }
+}
+
+node "Servidor de Banco de Dados\n(AWS RDS)" {
+  database "PostgreSQL\n(Multi-schema)"
+}
+
+node "Servidor de E-mail\n(AWS SES)" {
+  artifact "SMTP Relay"
+}
+
+"React App (SPA)" --> "API Gateway\n(Spring Cloud Gateway)" : HTTPS / REST
+"API Gateway\n(Spring Cloud Gateway)" --> "Auth Service" : HTTP interno
+"API Gateway\n(Spring Cloud Gateway)" --> "Aluno Service" : HTTP interno
+"API Gateway\n(Spring Cloud Gateway)" --> "Treino Service" : HTTP interno
+"API Gateway\n(Spring Cloud Gateway)" --> "Evolução Service" : HTTP interno
+"Auth Service" --> "PostgreSQL\n(Multi-schema)" : JDBC
+"Aluno Service" --> "PostgreSQL\n(Multi-schema)" : JDBC
+"Treino Service" --> "PostgreSQL\n(Multi-schema)" : JDBC
+"Evolução Service" --> "PostgreSQL\n(Multi-schema)" : JDBC
+"Notificação Service" --> "SMTP Relay" : SMTP
+
+@enduml

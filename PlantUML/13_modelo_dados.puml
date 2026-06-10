@@ -1,0 +1,114 @@
+@startuml ModeloDados_GymFlow
+title Modelo de Dados - GymFlow
+
+entity "usuario" as USR {
+  *id : BIGSERIAL <<PK>>
+  --
+  nome : VARCHAR(100)
+  email : VARCHAR(150) <<UNIQUE>>
+  senha_hash : VARCHAR(255)
+  cpf : VARCHAR(11) <<UNIQUE>>
+  data_nascimento : DATE
+  tipo : VARCHAR(20)
+  created_at : TIMESTAMP
+}
+
+entity "aluno" as ALN {
+  *id : BIGSERIAL <<PK>>
+  --
+  usuario_id : BIGINT <<FK>>
+  telefone : VARCHAR(15)
+  data_matricula : DATE
+  status : VARCHAR(20)
+}
+
+entity "plano_treino" as PLN {
+  *id : BIGSERIAL <<PK>>
+  --
+  aluno_id : BIGINT <<FK>>
+  nome : VARCHAR(100)
+  descricao : TEXT
+  objetivo : VARCHAR(100)
+  duracao_semanas : INT
+  ativo : BOOLEAN
+  created_at : TIMESTAMP
+}
+
+entity "ficha_treino" as FCH {
+  *id : BIGSERIAL <<PK>>
+  --
+  plano_treino_id : BIGINT <<FK>>
+  dia_semana : VARCHAR(20)
+  grupo_muscular : VARCHAR(100)
+  descricao : VARCHAR(255)
+}
+
+entity "exercicio" as EXR {
+  *id : BIGSERIAL <<PK>>
+  --
+  nome : VARCHAR(100)
+  descricao : TEXT
+  grupo_muscular : VARCHAR(100)
+  equipamento : VARCHAR(100)
+  video_url : VARCHAR(255)
+}
+
+entity "exercicio_ficha" as EXF {
+  *id : BIGSERIAL <<PK>>
+  --
+  ficha_treino_id : BIGINT <<FK>>
+  exercicio_id : BIGINT <<FK>>
+  series : INT
+  repeticoes : VARCHAR(20)
+  carga_sugerida : VARCHAR(20)
+  descanso_segundos : INT
+  observacoes : TEXT
+  ordem : INT
+}
+
+entity "sessao_treino" as SST {
+  *id : BIGSERIAL <<PK>>
+  --
+  aluno_id : BIGINT <<FK>>
+  ficha_treino_id : BIGINT <<FK>>
+  inicio : TIMESTAMP
+  fim : TIMESTAMP
+  status : VARCHAR(20)
+}
+
+entity "serie_registrada" as SRG {
+  *id : BIGSERIAL <<PK>>
+  --
+  sessao_treino_id : BIGINT <<FK>>
+  exercicio_ficha_id : BIGINT <<FK>>
+  series_realizadas : INT
+  repeticoes_realizadas : INT
+  carga_usada : DECIMAL(6,2)
+  observacao : TEXT
+}
+
+entity "medida_corporal" as MDC {
+  *id : BIGSERIAL <<PK>>
+  --
+  aluno_id : BIGINT <<FK>>
+  data : DATE
+  peso : DECIMAL(5,2)
+  altura : DECIMAL(4,2)
+  imc : DECIMAL(4,2)
+  percentual_gordura : DECIMAL(4,2)
+  massa_magra : DECIMAL(5,2)
+  circ_abdomen : DECIMAL(5,2)
+}
+
+USR ||--|| ALN
+ALN ||--o{ PLN
+PLN ||--o{ FCH
+FCH ||--o{ EXF
+EXR ||--o{ EXF
+ALN ||--o{ SST
+FCH ||--o{ SST
+SST ||--o{ SRG
+EXF ||--o{ SRG
+ALN ||--o{ MDC
+
+@enduml

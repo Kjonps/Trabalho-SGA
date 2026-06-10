@@ -1,0 +1,19 @@
+@startuml Comunicacao_UC07
+title Diagrama de Comunicação - UC-07: Registrar Medidas Corporais
+
+object "recepcionista: Recepcionista" as REC
+object "evolucaoController: EvolucaoController" as CTRL
+object "medidaService: MedidaCorporalService" as SVC
+object "medidaRepository: MedidaCorporalRepository" as REPO
+object "novaMedida: MedidaCorporal" as MDC
+
+REC -> CTRL : 1: POST /alunos/{id}/medidas {dados}
+CTRL -> SVC : 2: registrarMedidas(alunoId, medidasDTO)
+SVC -> SVC : 3: calcularIMC(peso, altura)
+SVC -> MDC : 4: new MedidaCorporal(aluno, dados, imc)
+SVC -> REPO : 5: save(novaMedida)
+REPO --> SVC : 6: medidaSalva
+SVC --> CTRL : 7: MedidaCorporalDTO
+CTRL --> REC : 8: 201 Created {medidaId, imc}
+
+@enduml

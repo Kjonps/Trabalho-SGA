@@ -1,0 +1,22 @@
+@startuml DSS_UC06_GerenciarPlanos
+title DSS - UC-06: Gerenciar Planos de Treino
+
+actor "Recepcionista" as REC
+participant "Sistema GymFlow" as SIS
+
+REC -> SIS : acessarGerenciamentoPlanos()
+SIS --> REC : listarPlanos(planos)
+
+REC -> SIS : criarPlano(nome, descricao, objetivo, duracaoSemanas)
+SIS --> REC : confirmarCriacaoPlano(planoId)
+
+REC -> SIS : adicionarFicha(planoId, diaSemana, grupoMuscular)
+SIS --> REC : confirmarFicha(fichaId)
+
+REC -> SIS : adicionarExercicioFicha(fichaId, exercicioId, series, repeticoes, carga)
+SIS --> REC : confirmarExercicio(exercicioFichaId)
+
+REC -> SIS : vincularPlanoAluno(planoId, alunoId)
+SIS --> REC : exibirConfirmacao("Plano vinculado com sucesso")
+
+@enduml

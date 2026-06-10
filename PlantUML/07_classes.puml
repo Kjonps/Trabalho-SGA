@@ -1,0 +1,122 @@
+@startuml DiagramaClasses_GymFlow
+title Diagrama de Classes - GymFlow
+
+class Usuario {
+  -Long id
+  -String nome
+  -String email
+  -String senha
+  -String cpf
+  -LocalDate dataNascimento
+  -TipoUsuario tipo
+  +autenticar(email, senha): boolean
+  +alterarSenha(novaSenha): void
+}
+
+enum TipoUsuario {
+  ALUNO
+  RECEPCIONISTA
+  ADMINISTRADOR
+}
+
+class Aluno {
+  -Long id
+  -Usuario usuario
+  -String telefone
+  -LocalDate dataMatricula
+  -StatusAluno status
+  +getHistoricoTreinos(): List<SessaoTreino>
+  +getMedidasCorporais(): List<MedidaCorporal>
+}
+
+enum StatusAluno {
+  ATIVO
+  INATIVO
+  SUSPENSO
+}
+
+class PlanoTreino {
+  -Long id
+  -String nome
+  -String descricao
+  -String objetivo
+  -int duracaoSemanas
+  -List<FichaTreino> fichas
+  +adicionarFicha(ficha): void
+  +removerFicha(fichaId): void
+}
+
+class FichaTreino {
+  -Long id
+  -String diaSemana
+  -String grupaMuscular
+  -List<ExercicioFicha> exercicios
+  +adicionarExercicio(exercicio): void
+}
+
+class Exercicio {
+  -Long id
+  -String nome
+  -String descricao
+  -String grupaMuscular
+  -String equipamento
+  -String videoUrl
+}
+
+class ExercicioFicha {
+  -Long id
+  -Exercicio exercicio
+  -int series
+  -String repeticoes
+  -String cargaSugerida
+  -int descansoSegundos
+  -String observacoes
+}
+
+class SessaoTreino {
+  -Long id
+  -Aluno aluno
+  -FichaTreino ficha
+  -LocalDateTime inicio
+  -LocalDateTime fim
+  -List<SerieRegistrada> series
+  +calcularDuracao(): int
+  +finalizar(): void
+}
+
+class SerieRegistrada {
+  -Long id
+  -ExercicioFicha exercicioFicha
+  -int seriesRealizadas
+  -int repeticoesRealizadas
+  -double cargaUsada
+  -String observacao
+}
+
+class MedidaCorporal {
+  -Long id
+  -Aluno aluno
+  -LocalDate data
+  -double peso
+  -double altura
+  -double imc
+  -double percentualGordura
+  -double massaMagra
+  -double circunferenciaAbdomen
+  +calcularIMC(): double
+}
+
+Usuario "1" -- "1" Aluno
+Usuario --> TipoUsuario
+Aluno --> StatusAluno
+Aluno "1" --> "0..*" PlanoTreino
+Aluno "1" --> "0..*" SessaoTreino
+Aluno "1" --> "0..*" MedidaCorporal
+PlanoTreino "1" --> "1..*" FichaTreino
+FichaTreino "1" --> "1..*" ExercicioFicha
+ExercicioFicha "1" --> "1" Exercicio
+SessaoTreino "1" --> "1" FichaTreino
+SessaoTreino "1" --> "0..*" SerieRegistrada
+SerieRegistrada "1" --> "1" ExercicioFicha
+
+@enduml
