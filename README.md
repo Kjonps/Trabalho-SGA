@@ -35,7 +35,7 @@ O **GymFlow** é uma plataforma web voltada para academias que desejam oferecer 
 
 ## 🔗 Links Úteis
 
-- 📖 **Documentação:** [Documentação de Projeto (PDF/DOCX)](./docs/GymFlow_Documentacao_Projeto.pdf)
+- 📖 **Documentação:** [Documentação de Projeto (PDF/DOCX)](./docs/Trabalho 2 atualizado.pdf)
 - 🗂️ **Diagramas PlantUML:** [Ver pasta /PlantUML](./PlantUML/)
 
 ---
